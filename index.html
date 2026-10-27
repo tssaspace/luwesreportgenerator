@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PM Report Generator · Civil Structure Examination</title>
+<link rel="icon" type="image/png" href="static/favicon.png">
+<link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+<div class="hero">
+  <h1>PM Report Generator</h1>
+  <p class="sub">Isi data pekerjaan, upload foto dokumentasi dan ceklis form. Hasilnya satu file Word siap pakai, nomor dan tata letaknya dibuat otomatis.</p>
+</div>
+
+<main>
+  <section class="card">
+    <h2>1 &middot; Jenis Form</h2>
+    <div class="segmented" id="kind" role="tablist" aria-label="Jenis form">
+      <button type="button" class="active" data-kind="pm" role="tab" aria-selected="true">Preventive Maintenance</button>
+      <button type="button" data-kind="cm" role="tab" aria-selected="false">Corrective Maintenance <span class="soon">Segera</span></button>
+    </div>
+    <p class="hint">Format preventive: halaman ringkasan, dokumentasi kegiatan, lalu satu halaman per foto ceklis form.</p>
+  </section>
+
+  <section class="card">
+    <h2>2 &middot; Informasi Pekerjaan</h2>
+    <div class="grid">
+      <label class="wide"><span class="l">Work Title <b class="req">*</b></span> <input type="text" id="workTitle" autocomplete="off" placeholder="Jasa Pemeliharaan dan Pengoperasian Structural Health Monitoring System">
+      </label>
+      <label class="wide"><span class="l">WO <span class="opt">opsional</span></span> <input type="text" id="wo" autocomplete="off">
+      </label>
+      <label><span class="l">Tanggal Mulai <b class="req">*</b></span> <input type="date" id="dateStart">
+      </label>
+      <label><span class="l">Tanggal Selesai <span class="opt">kosongkan jika satu hari</span></span> <input type="date" id="dateEnd">
+      </label>
+      <label><span class="l">Jam Mulai</span> <input type="time" id="timeStart">
+      </label>
+      <label><span class="l">Jam Selesai</span> <input type="time" id="timeEnd">
+      </label>
+      <label class="wide"><span class="l">Location</span> <input type="text" id="location" autocomplete="off" placeholder="DL 12k028, Benhill – Istora">
+      </label>
+      <label class="wide"><span class="l">PIC</span> <input type="text" id="pic" autocomplete="off" placeholder="Nama, Nama">
+      </label>
+      <label><span class="l">Lampiran <span class="opt">otomatis = jumlah foto ceklis</span></span> <input type="text" id="lampiran" inputmode="numeric" autocomplete="off">
+      </label>
+    </div>
+    <p class="preview">Tampil di dokumen: <strong id="datePreview">–</strong> &nbsp;·&nbsp; <strong id="timePreview">–</strong></p>
+  </section>
+
+  <section class="card">
+    <h2>3 &middot; Penandatangan</h2>
+    <div class="signgrid">
+      <fieldset>
+        <legend>Dilaksanakan Oleh</legend>
+        <label><span class="l">Nama</span> <input type="text" id="s1Name" autocomplete="off"></label>
+        <label><span class="l">Perusahaan <span class="opt">opsional</span></span> <input type="text" id="s1Org" autocomplete="off"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Diperiksa Oleh</legend>
+        <label><span class="l">Nama <span class="opt">opsional</span></span> <input type="text" id="s2Name" autocomplete="off"></label>
+        <label><span class="l">Perusahaan <span class="opt">opsional</span></span> <input type="text" id="s2Org" autocomplete="off"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Mengetahui</legend>
+        <label><span class="l">Nama <span class="opt">opsional</span></span> <input type="text" id="s3Name" autocomplete="off"></label>
+        <label><span class="l">Perusahaan <span class="opt">opsional</span></span> <input type="text" id="s3Org" autocomplete="off"></label>
+      </fieldset>
+    </div>
+    <p class="hint">Kolom yang dikosongkan tetap kosong di dokumen, jadi bisa ditulis tangan setelah dicetak.</p>
+  </section>
+
+  <section class="card">
+    <h2>4 &middot; Dokumentasi Kegiatan</h2>
+    <div class="tablewrap">
+      <table class="photos" id="docTable">
+        <thead><tr><th class="c-grip"></th><th class="c-no">No</th><th class="c-photo">Foto</th><th>Caption</th><th class="c-act"></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="rowbar">
+      <div class="btns">
+        <button type="button" class="primary" data-add="docs">+ Tambah Baris</button>
+        <button type="button" class="ghost" data-multi="docs">Upload banyak foto…</button>
+      </div>
+      <span class="total"><strong id="docCount">0</strong> foto</span>
+    </div>
+    <p class="hint">Foto otomatis dipotong rasio 16:9 dari tengah, ukuran seragam. Seret <span aria-hidden="true">⠿</span> untuk mengurutkan ulang. Nomor ① ② ③ dibuat otomatis mengikuti urutan.</p>
+  </section>
+
+  <section class="card">
+    <h2>5 &middot; Foto Ceklis Form</h2>
+    <div class="tablewrap">
+      <table class="photos" id="chkTable">
+        <thead><tr><th class="c-grip"></th><th class="c-no">No</th><th class="c-photo">Foto</th><th>Berkas</th><th class="c-act"></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="rowbar">
+      <div class="btns">
+        <button type="button" class="primary" data-add="checks">+ Tambah Baris</button>
+        <button type="button" class="ghost" data-multi="checks">Upload banyak foto…</button>
+      </div>
+      <span class="total"><strong id="chkCount">0</strong> foto</span>
+    </div>
+    <p class="hint">Satu foto = satu halaman penuh, rasio asli dipertahankan dan diletakkan di tengah antara header dan footer.</p>
+  </section>
+
+  <section class="card">
+    <h2>6 &middot; Hasil</h2>
+    <label class="wide"><span class="l">Nama file</span> <input type="text" id="filename" autocomplete="off" placeholder="otomatis dari judul dan tanggal">
+    </label>
+    <p class="summary" id="summary"></p>
+    <button type="button" class="submit" id="submit">Generate Dokumen</button>
+    <div id="result" role="status" aria-live="polite"></div>
+  </section>
+</main>
+
+<dialog id="devDialog">
+  <h3>Corrective Maintenance</h3>
+  <p><strong>Masih dalam pengembangan.</strong> Format corrective action belum tersedia. Untuk sekarang gunakan Preventive Maintenance.</p>
+  <button type="button" class="close" id="devClose">Mengerti</button>
+</dialog>
+
+<input type="file" id="picker" accept="image/*" hidden>
+<input type="file" id="pickerMulti" accept="image/*" multiple hidden>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="template.js"></script>
+<script src="docgen.js"></script>
+<script src="static/app.js"></script>
+</body>
+</html>
